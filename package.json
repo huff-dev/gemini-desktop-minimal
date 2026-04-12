@@ -40,8 +40,9 @@
         "AppImage",
         "deb"
       ],
-      "executableName": "gemini",
-      "icon": "assets/Google_Gemini_icon.svg",
+      "executableName": "Gemini",
+      "icon": "assets/App_icon.png",
+      "maintainer": "curlcreep <hmj.dev@proton.me>",
       "category": "Office"
     },
     "files": [
