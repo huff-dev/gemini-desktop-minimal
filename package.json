@@ -40,7 +40,8 @@
         "AppImage",
         "deb"
       ],
-      "icon": "assets/App_icon.png",
+      "executableName": "gemini",
+      "icon": "assets/Google_Gemini_icon.svg",
       "category": "Office"
     },
     "files": [
