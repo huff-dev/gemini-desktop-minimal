@@ -5,7 +5,7 @@
 <h1 align="center">Gemini Desktop Minimal</h1>
 
 <p align="center">
-  A lightweight, minimal desktop application for Google Gemini.
+  A lightweight, clean & minimal desktop application for Google Gemini built with Electron.
 </p>
 
 ---
@@ -19,16 +19,16 @@
 ## Installation
 
 ### Windows
-1. Download the `Gemini Setup 1.0.0.exe` from the [Releases](https://github.com/curlcreep/gemini-desktop-minimal/releases) page.
+1. Download the `Gemini Setup.exe` from the [Releases](https://github.com/curlcreep/gemini-desktop-minimal/releases) page.
 2. Run the installer to install the application.
 
 ### Linux
-1. Download the `Gemini-1.0.0.AppImage` or `gemini_1.0.0_amd64.deb` from the [Releases](https://github.com/curlcreep/gemini-desktop-minimal/releases) page.
+1. Download the `Gemini.AppImage` or `gemini_amd64.deb` from the [Releases](https://github.com/curlcreep/gemini-desktop-minimal/releases) page.
 2. For AppImage:
-   - Make it executable: `chmod +x Gemini-1.0.0.AppImage`
+   - Make it executable: `chmod +x Gemini.AppImage`
    - Run the file.
 3. For DEB:
-   - Install using: `sudo dpkg -i gemini_1.0.0_amd64.deb`
+   - Install using: `sudo dpkg -i gemini_amd64.deb`
 
 ## Development
 
