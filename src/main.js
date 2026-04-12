@@ -1,8 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
 
 const stateFilePath = path.join(app.getPath('userData'), 'window-state.json');
+let mainWindow;
 
 function loadWindowState() {
   try {
@@ -30,7 +32,7 @@ function createWindow() {
     ? path.join(__dirname, '..', 'assets', 'App_icon.ico')
     : path.join(__dirname, '..', 'assets', 'App_icon.png');
 
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     x: windowState.x,
     y: windowState.y,
     width: windowState.width,
@@ -96,9 +98,39 @@ function createWindow() {
 
 app.whenReady().then(() => {
   if (process.platform === 'darwin') {
-    app.dock.setIcon(path.join(__dirname, 'App_icon.png'));
+    app.dock.setIcon(path.join(__dirname, '..', 'assets', 'App_icon.png'));
   }
   createWindow();
+
+  mainWindow.webContents.once('dom-ready', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });
+
+  autoUpdater.on('checking-for-update', () => {
+    mainWindow.webContents.send('toggle-update-spinner', true);
+  });
+
+  autoUpdater.on('update-available', () => {
+    mainWindow.webContents.send('toggle-update-spinner', false);
+    mainWindow.webContents.send('update-available');
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    mainWindow.webContents.send('toggle-update-spinner', false);
+  });
+
+  autoUpdater.on('error', () => {
+    mainWindow.webContents.send('toggle-update-spinner', false);
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    autoUpdater.quitAndInstall();
+  });
+
+  ipcMain.on('download-update', () => {
+    autoUpdater.downloadUpdate();
+  });
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });

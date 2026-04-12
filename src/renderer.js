@@ -2,6 +2,8 @@ const backBtn = document.getElementById('back');
 const forwardBtn = document.getElementById('forward');
 const minimizeBtn = document.getElementById('minimize');
 const closeBtn = document.getElementById('close');
+const updateSpinner = document.getElementById('update-spinner');
+const updateBtn = document.getElementById('update-btn');
 const webview = document.getElementById('webview');
 const header = document.querySelector('header');
 
@@ -33,6 +35,38 @@ closeBtn.addEventListener('click', () => {
 
 window.electronAPI.onReload(() => {
   webview.reload();
+});
+
+let spinnerStartTime = 0;
+const MIN_SPINNER_TIME = 1500;
+
+window.electronAPI.onUpdateCheck((isChecking) => {
+  if (isChecking) {
+    spinnerStartTime = Date.now();
+    updateSpinner.classList.add('checking');
+  } else {
+    const elapsed = Date.now() - spinnerStartTime;
+    const remaining = Math.max(0, MIN_SPINNER_TIME - elapsed);
+    
+    setTimeout(() => {
+      updateSpinner.classList.add('fade-out-spinner');
+      setTimeout(() => {
+        updateSpinner.classList.remove('checking', 'fade-out-spinner');
+      }, 500);
+    }, remaining);
+  }
+});
+
+window.electronAPI.onUpdateAvailable(() => {
+  updateSpinner.classList.add('hidden');
+  updateBtn.classList.add('available');
+});
+
+updateBtn.addEventListener('click', () => {
+  updateBtn.classList.remove('available');
+  updateSpinner.classList.remove('hidden');
+  updateSpinner.classList.add('checking');
+  window.electronAPI.downloadUpdate();
 });
 
 function getBrightness(rgb) {
@@ -84,6 +118,8 @@ const updateHeaderColor = async () => {
       closeBtn.style.color = iconColor;
       backBtn.style.color = iconColor;
       forwardBtn.style.color = iconColor;
+      updateSpinner.style.color = iconColor;
+      updateBtn.style.color = iconColor;
     }
   } catch (err) {
   }

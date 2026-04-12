@@ -18,6 +18,14 @@
     "directories": {
       "output": "dist"
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "curlcreep",
+        "repo": "gemini-desktop-minimal",
+        "private": true
+      }
+    ],
     "win": {
       "target": "nsis",
       "icon": "assets/App_icon.ico"
@@ -49,5 +57,8 @@
     "electron": "^41.2.0",
     "electron-builder": "^26.8.1",
     "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.3"
   }
 }
