@@ -1,0 +1,53 @@
+{
+  "name": "gemini",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "nodemon --exec electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-builder build",
+    "build:linux": "electron-builder build --linux",
+    "build:win": "electron-builder build --windows",
+    "build:mac": "electron-builder build --macos",
+    "build:all": "electron-builder build -wlm"
+  },
+  "build": {
+    "appId": "com.gemini.app",
+    "productName": "Gemini",
+    "copyright": "Copyright © 2026",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/App_icon.ico"
+    },
+    "mac": {
+      "target": "zip",
+      "icon": "assets/App_icon.png",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/App_icon.png",
+      "category": "Office"
+    },
+    "files": [
+      "assets/**/*",
+      "src/**/*",
+      "package.json"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Google Gemini Desktop Application",
+  "devDependencies": {
+    "electron": "^41.2.0",
+    "electron-builder": "^26.8.1",
+    "nodemon": "^3.1.14"
+  }
+}
