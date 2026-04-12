@@ -50,7 +50,7 @@
     ]
   },
   "keywords": [],
-  "author": "",
+  "author": "curlcreep <hmj.dev@proton.me>",
   "license": "ISC",
   "description": "Google Gemini Desktop Application",
   "devDependencies": {

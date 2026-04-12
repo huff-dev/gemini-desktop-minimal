@@ -14,8 +14,6 @@
 
 - **Minimal UI**: A clean, distraction-free interface focusing entirely on the Gemini experience.
 - **Adaptive Theme**: The title bar automatically adapts its color to match the Gemini interface (Dark/Light mode).
-- **Navigation Controls**: Integrated back, forward, and refresh functionality.
-- **Auto-Updates**: Automatically checks for new releases and updates in the background.
 - **Cross-Platform**: Available for Windows and Linux.
 
 ## Installation
@@ -49,12 +47,3 @@ To run the project locally:
    ```bash
    npm start
    ```
-
-## Keyboard Shortcuts
-
-- **Refresh**: `Ctrl+R` or `F5`
-- **Back**: `Alt+Left` (standard browser shortcut)
-- **Forward**: `Alt+Right` (standard browser shortcut)
-
-## License
-ISC
