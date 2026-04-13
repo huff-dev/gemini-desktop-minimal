@@ -3,18 +3,37 @@ const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
 
+// Memory Optimization Switches
+app.commandLine.appendSwitch('disable-renderer-backgrounding', 'false');
+app.commandLine.appendSwitch('disable-background-timer-throttling', 'false');
+app.commandLine.appendSwitch('js-flags', '--max-old-space-size=512'); // Caps V8 heap size to 512MB
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
+
 const stateFilePath = path.join(app.getPath('userData'), 'window-state.json');
 let mainWindow;
 
-function loadWindowState() {
-  try {
-    if (fs.existsSync(stateFilePath)) {
-      return JSON.parse(fs.readFileSync(stateFilePath, 'utf8'));
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
     }
-  } catch (err) {
-    console.error('Failed to load window state:', err);
+  });
+
+  function loadWindowState() {
+    try {
+      if (fs.existsSync(stateFilePath)) {
+        return JSON.parse(fs.readFileSync(stateFilePath, 'utf8'));
+      }
+    } catch (err) {
+      console.error('Failed to load window state:', err);
+    }
+    return { width: 600, height: 800, isMaximized: false };
   }
-  return { width: 600, height: 800, isMaximized: false };
 }
 
 function saveWindowState(state) {

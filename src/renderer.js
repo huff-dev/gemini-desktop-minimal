@@ -100,7 +100,7 @@ const updateHeaderColor = async () => {
       })()
     `);
     
-    if (color) {
+    if (color && color !== header.style.backgroundColor) {
       header.style.backgroundColor = color;
       webview.insertCSS(`
         bard-sidenav.mystuff-side-nav-update {
@@ -132,6 +132,12 @@ webview.addEventListener('dom-ready', async () => {
   loadingScreen.classList.add('fade-out');
 });
 
+webview.addEventListener('ipc-message', (event) => {
+  if (event.channel === 'theme-change') {
+    updateHeaderColor();
+  }
+});
+
 webview.addEventListener('did-finish-load', () => {
   updateHeaderColor();
   updateNavButtons();
@@ -144,8 +150,3 @@ webview.addEventListener('did-navigate-in-page', () => {
   updateHeaderColor();
   updateNavButtons();
 });
-
-setInterval(() => {
-  updateHeaderColor();
-  updateNavButtons();
-}, 2000);
