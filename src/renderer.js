@@ -1,5 +1,5 @@
 const backBtn = document.getElementById('back');
-const forwardBtn = document.getElementById('forward');
+// const forwardBtn = document.getElementById('forward');
 const minimizeBtn = document.getElementById('minimize');
 const closeBtn = document.getElementById('close');
 const updateSpinner = document.getElementById('update-spinner');
@@ -19,11 +19,13 @@ backBtn.addEventListener('click', () => {
   }
 });
 
+/*
 forwardBtn.addEventListener('click', () => {
   if (webview.canGoForward()) {
     webview.goForward();
   }
 });
+*/
 
 minimizeBtn.addEventListener('click', () => {
   window.electronAPI.minimize();
@@ -77,11 +79,17 @@ function getBrightness(rgb) {
 }
 
 const updateNavButtons = () => {
-  backBtn.style.opacity = webview.canGoBack() ? '1' : '0.5';
-  backBtn.style.cursor = webview.canGoBack() ? 'pointer' : 'default';
+  const url = webview.getURL();
+  const isMainPage = url === 'https://gemini.google.com/app' || url === 'https://gemini.google.com/app/' || url.startsWith('https://gemini.google.com/app?');
   
-  forwardBtn.style.opacity = webview.canGoForward() ? '1' : '0.5';
-  forwardBtn.style.cursor = webview.canGoForward() ? 'pointer' : 'default';
+  const navContainer = document.querySelector('.nav-buttons');
+  if (isMainPage) {
+    navContainer.classList.add('hidden');
+  } else {
+    navContainer.classList.remove('hidden');
+    backBtn.style.opacity = webview.canGoBack() ? '1' : '0.5';
+    backBtn.style.pointerEvents = webview.canGoBack() ? 'auto' : 'none';
+  }
 };
 
 const updateHeaderColor = async () => {
@@ -150,3 +158,18 @@ webview.addEventListener('did-navigate-in-page', () => {
   updateHeaderColor();
   updateNavButtons();
 });
+
+// Simulation of update availability
+// setTimeout(() => {
+//   updateSpinner.classList.add('checking');
+//   spinnerStartTime = Date.now();
+  
+//   setTimeout(() => {
+//     updateSpinner.classList.add('fade-out-spinner');
+//     setTimeout(() => {
+//       updateSpinner.classList.remove('checking', 'fade-out-spinner');
+//       updateSpinner.classList.add('hidden');
+//       updateBtn.classList.add('available');
+//     }, 500);
+//   }, 3000);
+// }, 5000);

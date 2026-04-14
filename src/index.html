@@ -8,6 +8,20 @@
   </head>
   <body>
       <header class="titlebar">
+        <div class="nav-buttons hidden">
+          <button id="back" class="nav-btn">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 12h12M6 12l5-5m-5 5 5 5" />
+            </svg>
+          </button>
+
+          <!-- <button id="forward" class="nav-btn">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 12h12m0 0-5-5m5 5-5 5" />
+            </svg>
+          </button> -->
+        </div>
+
         <div id="update-container" class="update-container">
           <div id="update-spinner" class="spinner" title="Checking for updates...">
             <svg viewBox="0 0 24 24" class="minimal-spinner">
@@ -18,19 +32,7 @@
             Update
           </button>
         </div>
-        <div class="nav-buttons">
-          <button id="back" class="nav-btn">
-            <svg viewBox="0 0 24 24">
-              <path d="M6 12h12M6 12l5-5m-5 5 5 5" />
-            </svg>
-          </button>
 
-          <button id="forward" class="nav-btn">
-            <svg viewBox="0 0 24 24">
-              <path d="M6 12h12m0 0-5-5m5 5-5 5" />
-            </svg>
-          </button>
-        </div>
         <div id="window-controls">
           <button id="minimize">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
