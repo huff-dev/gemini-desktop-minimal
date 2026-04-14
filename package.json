@@ -23,7 +23,7 @@
         "provider": "github",
         "owner": "huff-dev",
         "repo": "gemini-desktop-minimal",
-        "private": true
+        "private": false
       }
     ],
     "win": {

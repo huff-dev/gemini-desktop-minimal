@@ -80,8 +80,7 @@ function getBrightness(rgb) {
 
 const updateNavButtons = () => {
   const url = webview.getURL();
-  const isMainPage = url === 'https://gemini.google.com/app' || url === 'https://gemini.google.com/app/' || url.startsWith('https://gemini.google.com/app?');
-  
+  const isMainPage = url.startsWith('https://gemini.google.com/app');
   const navContainer = document.querySelector('.nav-buttons');
   if (isMainPage) {
     navContainer.classList.add('hidden');
@@ -136,7 +135,6 @@ const updateHeaderColor = async () => {
 webview.addEventListener('dom-ready', async () => {
   await updateHeaderColor();
   updateNavButtons();
-  
   loadingScreen.classList.add('fade-out');
 });
 
