@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  ⚠️ Logging in with your Google account is currently not working reliably. After restarting the app, you may encounter the error <code>"Something went wrong (13)"</code>.
+  You may encounter the error <code>"Something went wrong (13)"</code> when using the "Fast" model option, I don't know what causes it.
 </p>
 
 ---
