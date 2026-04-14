@@ -1,5 +1,5 @@
 {
-  "name": "gemini",
+  "name": "gemini-desktop",
   "version": "1.0.1",
   "main": "src/main.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build:linux": "electron-builder build --linux",
     "build:win": "electron-builder build --windows",
     "build:mac": "electron-builder build --macos",
-    "build:all": "electron-builder build -wlm"
+    "build:all": "electron-builder build -wl"
   },
   "build": {
     "appId": "com.gemini.app",
@@ -21,7 +21,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "curlcreep",
+        "owner": "huff-dev",
         "repo": "gemini-desktop-minimal",
         "private": true
       }
@@ -42,7 +42,7 @@
       ],
       "executableName": "Gemini",
       "icon": "assets/App_icon.png",
-      "maintainer": "curlcreep <hmj.dev@proton.me>",
+      "maintainer": "huff-dev <hmj.dev@proton.me>",
       "category": "Office"
     },
     "files": [
@@ -52,7 +52,7 @@
     ]
   },
   "keywords": [],
-  "author": "curlcreep <hmj.dev@proton.me>",
+  "author": "huff-dev <hmj.dev@proton.me>",
   "license": "ISC",
   "description": "Google Gemini Desktop Application",
   "devDependencies": {

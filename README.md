@@ -19,11 +19,11 @@
 ## Installation
 
 ### Windows
-1. Download the `Gemini Setup.exe` from the [Releases](https://github.com/curlcreep/gemini-desktop-minimal/releases) page.
+1. Download the `Gemini Setup.exe` from the [Releases](https://github.com/huff-dev/gemini-desktop-minimal/releases) page.
 2. Run the installer to install the application.
 
 ### Linux
-1. Download the `Gemini.AppImage` or `gemini_amd64.deb` from the [Releases](https://github.com/curlcreep/gemini-desktop-minimal/releases) page.
+1. Download the `Gemini.AppImage` or `gemini_amd64.deb` from the [Releases](https://github.com/huff-dev/gemini-desktop-minimal/releases) page.
 2. For AppImage:
    - Make it executable: `chmod +x Gemini.AppImage`
    - Run the file.
@@ -36,7 +36,7 @@ To run the project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/curlcreep/gemini-desktop-minimal.git
+   git clone https://github.com/huff-dev/gemini-desktop-minimal.git
    cd gemini-desktop-minimal
    ```
 2. Install dependencies:
