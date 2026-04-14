@@ -8,6 +8,10 @@
   A lightweight, clean & minimal desktop application for Google Gemini built with Electron.
 </p>
 
+<p align="center">
+  ⚠️ Logging in with your Google account is currently not working reliably. After restarting the app, you may encounter the error <code>"Something went wrong (13)"</code>.
+</p>
+
 ---
 
 ## Features
