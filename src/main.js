@@ -32,7 +32,7 @@ if (!gotTheLock) {
     } catch (err) {
       console.error('Failed to load window state:', err);
     }
-    return { width: 600, height: 800, isMaximized: false };
+    return { width: 980, height: 647, isMaximized: false };
   }
 }
 
@@ -113,6 +113,8 @@ function createWindow() {
     }
   });
   ipcMain.on('window-close', () => mainWindow.close());
+
+  // mainWindow.webContents.openDevTools({ mode: 'detach' });
 }
 
 app.whenReady().then(() => {
@@ -122,6 +124,7 @@ app.whenReady().then(() => {
   createWindow();
 
   mainWindow.webContents.once('dom-ready', () => {
+    autoUpdater.autoDownload = false;
     autoUpdater.checkForUpdatesAndNotify();
   });
 

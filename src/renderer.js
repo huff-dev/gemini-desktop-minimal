@@ -7,7 +7,29 @@ const updateBtn = document.getElementById('update-btn');
 const webview = document.getElementById('webview');
 const header = document.querySelector('header');
 
-const loadingScreen = document.getElementById('loading-screen');
+const savedBg = localStorage.getItem('theme-bg');
+const savedIsDark = localStorage.getItem('theme-is-dark') === 'true';
+
+function applyThemeColors(bgColor, isDark) {
+  header.style.backgroundColor = bgColor;
+  const iconColor = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+  minimizeBtn.style.color = iconColor;
+  closeBtn.style.color = iconColor;
+  backBtn.style.color = iconColor;
+  updateSpinner.style.color = iconColor;
+  updateBtn.style.color = iconColor;
+}
+
+function saveTheme(bgColor, isDark) {
+  try {
+    localStorage.setItem('theme-bg', bgColor);
+    localStorage.setItem('theme-is-dark', isDark ? 'true' : 'false');
+  } catch (e) {}
+}
+
+if (savedBg) {
+  applyThemeColors(savedBg, savedIsDark);
+}
 
 header.addEventListener('contextmenu', (e) => {
   e.preventDefault();
@@ -91,24 +113,31 @@ const updateNavButtons = () => {
   }
 };
 
-const updateHeaderColor = async () => {
+const updateHeaderColor = async (color) => {
   try {
-    const color = await webview.executeJavaScript(`
-      (() => {
-        function getEffectiveBackgroundColor(el) {
-          while (el) {
-            const bg = window.getComputedStyle(el).backgroundColor;
-            if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
-            el = el.parentElement;
+    if (!color) {
+      color = await webview.executeJavaScript(`
+        (() => {
+          function getEffectiveBackgroundColor(el) {
+            while (el) {
+              const bg = window.getComputedStyle(el).backgroundColor;
+              if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
+              el = el.parentElement;
+            }
+            return 'rgb(255, 255, 255)';
           }
-          return 'rgb(255, 255, 255)';
-        }
-        return getEffectiveBackgroundColor(document.body);
-      })()
-    `);
+          return getEffectiveBackgroundColor(document.body);
+        })()
+      `);
+    }
     
     if (color && color !== header.style.backgroundColor) {
-      header.style.backgroundColor = color;
+      const brightness = getBrightness(color);
+      const isDark = brightness <= 128;
+      applyThemeColors(color, isDark);
+      saveTheme(color, isDark);
+    }
+    if (color) {
       webview.insertCSS(`
         bard-sidenav.mystuff-side-nav-update {
           background-color: ${color} !important;
@@ -119,28 +148,34 @@ const updateHeaderColor = async () => {
           border-radius: 0px;
         }
       `);
-      const brightness = getBrightness(color);
-      const iconColor = brightness > 128 ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)';
-      minimizeBtn.style.color = iconColor;
-      closeBtn.style.color = iconColor;
-      backBtn.style.color = iconColor;
-      forwardBtn.style.color = iconColor;
-      updateSpinner.style.color = iconColor;
-      updateBtn.style.color = iconColor;
     }
   } catch (err) {
   }
 };
 
+let retryCount = 0;
+
+webview.addEventListener('did-fail-load', () => {
+  retryCount++;
+  const delay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+  setTimeout(() => {
+    webview.loadURL('https://gemini.google.com/app');
+  }, delay);
+});
+
+webview.addEventListener('did-navigate', () => {
+  retryCount = 0;
+});
+
 webview.addEventListener('dom-ready', async () => {
+  webview.setZoomFactor(0.8);
   await updateHeaderColor();
   updateNavButtons();
-  loadingScreen.classList.add('fade-out');
 });
 
 webview.addEventListener('ipc-message', (event) => {
   if (event.channel === 'theme-change') {
-    updateHeaderColor();
+    updateHeaderColor(event.args?.[0]);
   }
 });
 
@@ -155,6 +190,14 @@ webview.addEventListener('did-navigate', () => {
 webview.addEventListener('did-navigate-in-page', () => {
   updateHeaderColor();
   updateNavButtons();
+});
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    updateHeaderColor();
+  }, 150);
 });
 
 // Simulation of update availability

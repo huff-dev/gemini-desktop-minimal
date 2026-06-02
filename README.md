@@ -8,10 +8,6 @@
   A lightweight, clean & minimal desktop application for Google Gemini built with Electron.
 </p>
 
-<p align="center">
-  You may encounter the error <code>"Something went wrong (13)"</code> when using the "Fast" model option, I don't know what causes it.
-</p>
-
 ---
 
 ## Features
@@ -19,6 +15,10 @@
 - **Minimal UI**: A clean, distraction-free interface focusing entirely on the Gemini experience.
 - **Adaptive Theme**: The title bar automatically adapts its color to match the Gemini interface (Dark/Light mode).
 - **Cross-Platform**: Available for Windows and Linux.
+
+<p align="center">
+  <img src="assets/screenshot.png" width="1200" alt="App Screenshot">
+</p>
 
 ## Installation
 
