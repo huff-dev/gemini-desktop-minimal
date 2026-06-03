@@ -87,10 +87,7 @@ window.electronAPI.onUpdateAvailable(() => {
 });
 
 updateBtn.addEventListener('click', () => {
-  updateBtn.classList.remove('available');
-  updateSpinner.classList.remove('hidden');
-  updateSpinner.classList.add('checking');
-  window.electronAPI.downloadUpdate();
+  window.electronAPI.openUpdate();
 });
 
 function getBrightness(rgb) {

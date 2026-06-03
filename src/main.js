@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
@@ -14,6 +14,17 @@ let mainWindow;
 
 const gotTheLock = app.requestSingleInstanceLock();
 
+function loadWindowState() {
+  try {
+    if (fs.existsSync(stateFilePath)) {
+      return JSON.parse(fs.readFileSync(stateFilePath, 'utf8'));
+    }
+  } catch (err) {
+    console.error('Failed to load window state:', err);
+  }
+  return { width: 980, height: 647, isMaximized: false };
+}
+
 if (!gotTheLock) {
   app.quit();
 } else {
@@ -23,17 +34,6 @@ if (!gotTheLock) {
       mainWindow.focus();
     }
   });
-
-  function loadWindowState() {
-    try {
-      if (fs.existsSync(stateFilePath)) {
-        return JSON.parse(fs.readFileSync(stateFilePath, 'utf8'));
-      }
-    } catch (err) {
-      console.error('Failed to load window state:', err);
-    }
-    return { width: 980, height: 647, isMaximized: false };
-  }
 }
 
 function saveWindowState(state) {
@@ -124,8 +124,9 @@ app.whenReady().then(() => {
   createWindow();
 
   mainWindow.webContents.once('dom-ready', () => {
-    autoUpdater.autoDownload = false;
     autoUpdater.checkForUpdatesAndNotify();
+
+
   });
 
   autoUpdater.on('checking-for-update', () => {
@@ -145,12 +146,33 @@ app.whenReady().then(() => {
     mainWindow.webContents.send('toggle-update-spinner', false);
   });
 
-  autoUpdater.on('update-downloaded', () => {
-    autoUpdater.quitAndInstall();
-  });
+  ipcMain.on('open-update', () => {
+    const platform = process.platform;
+    let assetSuffix;
 
-  ipcMain.on('download-update', () => {
-    autoUpdater.downloadUpdate();
+    if (platform === 'win32') {
+      assetSuffix = '.exe';
+    } else if (platform === 'linux') {
+      assetSuffix = process.env.APPIMAGE ? '.AppImage' : '.deb';
+    } else if (platform === 'darwin') {
+      assetSuffix = '.zip';
+    }
+
+    const apiUrl = 'https://api.github.com/repos/huff-dev/gemini-desktop-minimal/releases/latest';
+    const req = require('https').get(apiUrl, { headers: { 'User-Agent': 'gemini-desktop' } }, (res) => {
+      let body = '';
+      res.on('data', (c) => body += c);
+      res.on('end', () => {
+        try {
+          const release = JSON.parse(body);
+          const asset = release.assets?.find((a) => a.name.endsWith(assetSuffix));
+          shell.openExternal(asset?.browser_download_url || 'https://github.com/huff-dev/gemini-desktop-minimal/releases/latest');
+        } catch {
+          shell.openExternal('https://github.com/huff-dev/gemini-desktop-minimal/releases/latest');
+        }
+      });
+    });
+    req.on('error', () => shell.openExternal('https://github.com/huff-dev/gemini-desktop-minimal/releases/latest'));
   });
 
   app.on('activate', () => {

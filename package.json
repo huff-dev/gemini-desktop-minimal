@@ -1,6 +1,6 @@
 {
   "name": "gemini-desktop",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "main": "src/main.js",
   "scripts": {
     "start": "nodemon --exec electron .",
@@ -28,7 +28,8 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "assets/App_icon.ico"
+      "icon": "assets/App_icon.ico",
+      "signAndEditExecutable": false
     },
     "mac": {
       "target": "zip",
@@ -37,7 +38,7 @@
     },
     "linux": {
       "target": [
-        "AppImage",
+				"AppImage",
         "deb"
       ],
       "executableName": "Gemini",
