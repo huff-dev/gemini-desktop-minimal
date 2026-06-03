@@ -28,8 +28,7 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "assets/App_icon.ico",
-      "signAndEditExecutable": false
+      "icon": "assets/App_icon.ico"
     },
     "mac": {
       "target": "zip",
@@ -38,7 +37,7 @@
     },
     "linux": {
       "target": [
-				"AppImage",
+        "AppImage",
         "deb"
       ],
       "executableName": "Gemini",
@@ -62,6 +61,6 @@
     "nodemon": "^3.1.14"
   },
   "dependencies": {
-    "electron-updater": "^6.8.3"
+    "electron-updater": "^6.8.3",
   }
 }

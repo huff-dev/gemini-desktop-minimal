@@ -118,6 +118,9 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  if (process.platform === 'win32') {
+    app.setAppUserModelId('com.gemini.app');
+  }
   if (process.platform === 'darwin') {
     app.dock.setIcon(path.join(__dirname, '..', 'assets', 'App_icon.png'));
   }
